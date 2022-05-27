@@ -23,7 +23,7 @@ MainWindow::~MainWindow()
 void MainWindow::selectFile() {
     qDebug() << "selectFile";
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("open_image"), "/Users/paipeng/Documents/2022_IdCard/webp", tr("image_file_format"));
+        tr("open_image"), "/Users/paipeng/Documents", tr("image_file_format"));
 
     qDebug() << "selected file: " << fileName;
 
@@ -35,5 +35,9 @@ void MainWindow::selectFile() {
     int h = ui->imageLabel->height();
 
     ui->imageLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+
+
+    QString filepath("./test.webp");
+    cpWebP.write(image, filepath);
 }
 

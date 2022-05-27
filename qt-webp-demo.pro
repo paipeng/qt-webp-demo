@@ -25,9 +25,10 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
-INCLUDEPATH += ../../C/libwebp-1.2.2/src
+#INCLUDEPATH += ../../C/libwebp-1.2.2/src
 
-#LIBS += -L/usr/local/lib -lwebp
+INCLUDEPATH += /usr/local/Cellar/webp/1.1.0/include
+LIBS += -L/usr/local/lib -lwebp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -9,10 +9,12 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    cpwebp.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    cpwebp.h \
     mainwindow.h
 
 FORMS += \
@@ -22,6 +24,10 @@ TRANSLATIONS += \
     qt-webp-demo_zh_CN.ts
 CONFIG += lrelease
 CONFIG += embed_translations
+
+INCLUDEPATH += ../../C/libwebp-1.2.2/src
+
+#LIBS += -L/usr/local/lib -lwebp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -25,7 +25,8 @@ CPWebP::CPWebP():quality(100)
 
 }
 
-int CPWebP::save(const QImage &img, QString &filepath, int target_size) {
+int CPWebP::save(const QImage &img, const QString &filepath, int target_size) {
+    qDebug() << "save: " << filepath << " target_size: " << target_size;
     // Setup a config, starting form a preset and tuning some additional
     // parameters
     float quality_factor = 1;
@@ -130,10 +131,6 @@ int CPWebP::save(const QImage &img, QString &filepath, int target_size) {
         out.writeRawData((char*)writer.mem, writer.size);
         file.close();
     }
-
-
-
-
     // deallocate the memory used by compressed data
     WebPMemoryWriterClear(&writer);
     return 0;

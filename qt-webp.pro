@@ -1,6 +1,10 @@
-QT       += core gui
+TEMPLATE = lib
+DEFINES += CP_WEBP_LIBRARY=1
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core
+
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 CONFIG += c++11
 
@@ -13,6 +17,7 @@ SOURCES += \
 
 HEADERS += \
     cpwebp.h \
+    cpwebp_global.h
 
 
 CONFIG += lrelease

@@ -2,16 +2,17 @@
 #define CPWEBP_H
 
 
-//
+#include "cpwebp_global.h"
+
 class QImage;
 class QString;
 
-class CPWebP
+class CP_WEBP_EXPORT CPWebP
 {
 public:
     CPWebP();
 public:
-    int save( const QImage &img, QString &filepath, int target_size);
+    int save( const QImage &img, const QString &filepath, int target_size);
     bool write( const QImage &img , QString &filepath);
     bool read(const QString &filepath, QImage* img_pointer);
 private:

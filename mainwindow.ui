@@ -63,6 +63,32 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>120</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>encoded_webp</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="webpLabel">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>190</y>
+      <width>200</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -70,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

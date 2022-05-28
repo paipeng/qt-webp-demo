@@ -45,5 +45,8 @@ void MainWindow::selectFile() {
     QImage readImage;
     cpWebP.read(filepath, &readImage);
     qDebug() << "read image size: " << readImage.width() << "-" << readImage.height();
+
+
+    ui->webpLabel->setPixmap(QPixmap::fromImage(readImage));
 }
 

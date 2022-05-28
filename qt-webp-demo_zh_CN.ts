@@ -19,12 +19,17 @@
         <translation type="unfinished">选择文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="22"/>
+        <location filename="mainwindow.ui" line="76"/>
+        <source>encoded_webp</source>
+        <translation type="unfinished">生成WEBP图像</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="26"/>
         <source>open_image</source>
         <translation type="unfinished">选择图片文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="22"/>
+        <location filename="mainwindow.cpp" line="26"/>
         <source>image_file_format</source>
         <translation type="unfinished">图片文件格式 (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>

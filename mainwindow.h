@@ -19,9 +19,11 @@ public:
 
 private slots:
     void selectFile();
+    void encode();
 
 private:
     Ui::MainWindow *ui;
     CPWebP cpWebP;
+    QImage image;
 };
 #endif // MAINWINDOW_H

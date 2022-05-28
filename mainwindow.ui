@@ -66,10 +66,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>120</y>
-      <width>54</width>
-      <height>12</height>
+      <x>400</x>
+      <y>70</y>
+      <width>91</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
@@ -79,14 +79,50 @@
    <widget class="QLabel" name="webpLabel">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>190</y>
+      <x>400</x>
+      <y>200</y>
       <width>200</width>
       <height>200</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>110</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>target_size</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="targetSizeLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>110</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="encodePushButton">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>110</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>encode</string>
     </property>
    </widget>
   </widget>
@@ -120,8 +156,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>encodePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>encode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>657</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>selectFile()</slot>
+  <slot>encode()</slot>
  </slots>
 </ui>

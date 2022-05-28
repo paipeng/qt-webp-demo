@@ -24,12 +24,22 @@
         <translation type="unfinished">生成WEBP图像</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="26"/>
+        <location filename="mainwindow.ui" line="102"/>
+        <source>target_size</source>
+        <translation type="unfinished">目标文件尺寸</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="125"/>
+        <source>encode</source>
+        <translation type="unfinished">编码</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="27"/>
         <source>open_image</source>
         <translation type="unfinished">选择图片文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="26"/>
+        <location filename="mainwindow.cpp" line="27"/>
         <source>image_file_format</source>
         <translation type="unfinished">图片文件格式 (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>

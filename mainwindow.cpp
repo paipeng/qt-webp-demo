@@ -37,7 +37,8 @@ void MainWindow::selectFile() {
     ui->imageLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
 
 
-    QString filepath("./test.webp");
-    cpWebP.write(image, filepath);
+    QString filepath("test.webp");
+    //cpWebP.write(image, filepath);
+    cpWebP.save(image, filepath);
 }
 

@@ -11,7 +11,7 @@ class CPWebP
 public:
     CPWebP();
 public:
-    void save(QImage &image);
+    int save( const QImage &img, QString &filepath);
     bool write( const QImage &img , QString &filepath);
 private:
     int quality;

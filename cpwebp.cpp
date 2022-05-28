@@ -25,7 +25,7 @@ CPWebP::CPWebP():quality(100)
 
 }
 
-int CPWebP::save(const QImage &img, QString &filepath) {
+int CPWebP::save(const QImage &img, QString &filepath, int target_size) {
     // Setup a config, starting form a preset and tuning some additional
     // parameters
     float quality_factor = 1;
@@ -36,7 +36,11 @@ int CPWebP::save(const QImage &img, QString &filepath) {
     // ... additional tuning
     config.sns_strength = 90;
     config.filter_sharpness = 6;
-    config.alpha_quality = 90;
+    //config.alpha_quality = 90;
+    config.target_size = target_size;
+    config.target_PSNR = 1;
+    config.pass = 6;
+    config.lossless = 0;
     int config_error = WebPValidateConfig(&config);  // not mandatory, but useful
     qDebug() << "validate config: " << config_error;
     // Setup the input data
@@ -203,5 +207,34 @@ bool CPWebP::write( const QImage &img, QString &filepath){
     file.close();
     free( output );
 
+    return true;
+}
+
+
+bool CPWebP::read(const QString &filepath, QImage* img_pointer) {
+    QFile file(filepath);
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
+    QByteArray data = file.readAll();
+
+
+    int width, height;
+
+    uint8_t *raw = WebPDecodeRGBA( (uint8_t*)data.data(), data.size(), &width, &height );
+    if( !raw )
+        return false;
+
+    QImage img( width, height, QImage::Format_ARGB32 );
+    for( int iy=0; iy<height; iy++ ){
+        QRgb* row = (QRgb*)img.scanLine( iy );
+
+        for( int ix=0; ix<width; ix++ ){
+            uint8_t *pixel = raw + ( iy*width + ix ) * 4;
+            row[ix] = qRgba( pixel[0], pixel[1], pixel[2], pixel[3] );
+        }
+    }
+
+    *img_pointer = img;
+    free( raw );
     return true;
 }

@@ -27,8 +27,24 @@ CONFIG += embed_translations
 
 #INCLUDEPATH += ../../C/libwebp-1.2.2/src
 
-INCLUDEPATH += /usr/local/Cellar/webp/1.1.0/include
-LIBS += -L/usr/local/lib -lwebp
+
+
+
+
+win32:CONFIG(release, debug|release): {
+    INCLUDEPATH += C:/libwebp/include
+    LIBS += -LC:/libwebp/lib -llibwebp
+    }
+else:win32:CONFIG(debug, debug|release): {
+    INCLUDEPATH += C:/libwebp/include
+    LIBS += -LC:/libwebp/lib -llibwebp
+    }
+else:unix: {
+    INCLUDEPATH += /usr/local/Cellar/webp/1.1.0/include
+    LIBS += -L/usr/local/lib -lwebp
+}
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -44,7 +44,7 @@ void MainWindow::encode() {
 
     int target_size = ui->targetSizeLineEdit->text().toInt();
 
-    int h = 200;
+    int h = ui->webpLabel->height();
     //w = image.width() * h / image.height();
 
     QString filepath("test.webp");

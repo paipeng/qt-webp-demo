@@ -36,29 +36,29 @@ int CPWebP::save(const QImage &img, QString &filepath) {
     // ... additional tuning
     config.sns_strength = 90;
     config.filter_sharpness = 6;
+    config.alpha_quality = 90;
     int config_error = WebPValidateConfig(&config);  // not mandatory, but useful
-
+    qDebug() << "validate config: " << config_error;
     // Setup the input data
     WebPPicture pic;
     if (!WebPPictureInit(&pic)) {
       return 0;  // version error
     }
 
-
-
     QImage image = img;
     bool alpha = image.hasAlphaChannel();
     unsigned pixel_count = alpha ? 4 : 3;
     unsigned stride = pixel_count * image.width();
+    qDebug() << "stride: " << stride;
 
 
-    pic.width = stride;
-    pic.height = img.height();
+    pic.width = image.width();
+    pic.height = image.height();
     // allocated picture of dimension width x height
     if (!WebPPictureAlloc(&pic)) {
       return 0;   // memory error
     }
-
+    qDebug() << "picture size: " << pic.width << "-" << pic.height;
 
     uint8_t* data = new uint8_t[ stride * image.height() ];
     if( !data )
@@ -89,12 +89,13 @@ int CPWebP::save(const QImage &img, QString &filepath) {
     // WebPPictureFree(&pic) to reclaim memory.
     WebPPictureImportRGB(&pic, data, stride);
 
-    free(data);
+    delete[] data;
+
 
     // Set up a byte-output write method. WebPMemoryWriter, for instance.
-    WebPMemoryWriter wrt;
-    WebPMemoryWriterInit(&wrt);     // initialize 'wrt'
-
+    WebPMemoryWriter writer;
+    WebPMemoryWriterInit(&writer);
+#if 0
     FILE* out = NULL;
     const char *out_file = "test2.webp";
     std::wstring  testWstring  = filepath.toStdWString();
@@ -102,6 +103,13 @@ int CPWebP::save(const QImage &img, QString &filepath) {
     out = WFOPEN(testWstring.c_str(), "wb");
     pic.writer = MyFileWriter;
     pic.custom_ptr = (void*)out;
+
+#else
+    // Set up a byte-writing method (write-to-memory, in this case):
+    pic.writer = WebPMemoryWrite;
+    pic.custom_ptr = &writer;
+#endif
+
 
     // Compress!
     int ok = WebPEncode(&config, &pic);   // ok = 0 => error occurred!
@@ -111,8 +119,20 @@ int CPWebP::save(const QImage &img, QString &filepath) {
     // output data should have been handled by the writer at that point.
     // -> compressed data is the memory buffer described by wrt.mem / wrt.size
 
+    qDebug() << "writer size: " << writer.size;
+    QFile file(filepath);
+    if (file.open(QIODevice::WriteOnly)) {
+        QDataStream out(&file);
+        out.writeRawData((char*)writer.mem, writer.size);
+        file.close();
+    }
+
+
+
+
     // deallocate the memory used by compressed data
-    WebPMemoryWriterClear(&wrt);
+    WebPMemoryWriterClear(&writer);
+    return 0;
 }
 
 

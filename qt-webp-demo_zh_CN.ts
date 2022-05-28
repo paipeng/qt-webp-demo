@@ -34,6 +34,11 @@
         <translation type="unfinished">编码</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="138"/>
+        <source>gray</source>
+        <translation type="unfinished">灰色</translation>
+    </message>
+    <message>
         <location filename="mainwindow.cpp" line="27"/>
         <source>open_image</source>
         <translation type="unfinished">选择图片文件</translation>

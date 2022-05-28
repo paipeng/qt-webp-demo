@@ -115,7 +115,7 @@
    <widget class="QPushButton" name="encodePushButton">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>680</x>
       <y>60</y>
       <width>75</width>
       <height>23</height>
@@ -123,6 +123,19 @@
     </property>
     <property name="text">
      <string>encode</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="grayCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>60</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>gray</string>
     </property>
    </widget>
   </widget>

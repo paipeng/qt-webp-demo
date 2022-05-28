@@ -49,8 +49,19 @@ void MainWindow::encode() {
 
     QString filepath("test.webp");
     //cpWebP.write(image, filepath);
-    cpWebP.save(this->image.scaledToHeight(h, Qt::SmoothTransformation), filepath, target_size);
 
+    if (ui->grayCheckBox->isChecked()) {
+        QImage img(this->image);
+        for (int i = 0; i < img.width(); ++i) {
+            for (int j = 0; j < img.height(); j++) {
+                int gray =  qGray(img.pixel(i, j));
+                img.setPixel(i, j, QColor(gray, gray, gray).rgb());
+            }
+        }
+        cpWebP.save(img.scaledToHeight(h, Qt::SmoothTransformation), filepath, target_size);
+    } else {
+        cpWebP.save(this->image.scaledToHeight(h, Qt::SmoothTransformation), filepath, target_size);
+    }
 
     QImage readImage;
     cpWebP.read(filepath, &readImage);

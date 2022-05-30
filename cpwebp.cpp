@@ -235,3 +235,25 @@ bool CPWebP::read(const QString &filepath, QImage* img_pointer) {
     free( raw );
     return true;
 }
+
+bool CPWebP::readFromData(unsigned char* data, int data_len, QImage* img_pointer) {
+    int width, height;
+
+    uint8_t *raw = WebPDecodeRGBA( (uint8_t*)data, data_len, &width, &height );
+    if( !raw )
+        return false;
+
+    QImage img( width, height, QImage::Format_ARGB32 );
+    for( int iy=0; iy<height; iy++ ){
+        QRgb* row = (QRgb*)img.scanLine( iy );
+
+        for( int ix=0; ix<width; ix++ ){
+            uint8_t *pixel = raw + ( iy*width + ix ) * 4;
+            row[ix] = qRgba( pixel[0], pixel[1], pixel[2], pixel[3] );
+        }
+    }
+
+    *img_pointer = img;
+    free( raw );
+    return true;
+}

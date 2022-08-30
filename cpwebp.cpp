@@ -257,3 +257,98 @@ bool CPWebP::readFromData(unsigned char* data, int data_len, QImage* img_pointer
     free( raw );
     return true;
 }
+
+QByteArray CPWebP::convertToWebP(const QImage &img, int target_size) {
+    qDebug() << "convertToWebP: " << target_size;
+    // Setup a config, starting form a preset and tuning some additional
+    // parameters
+    float quality_factor = 1;
+    WebPConfig config;
+    if (!WebPConfigPreset(&config, WEBP_PRESET_PHOTO, quality_factor)) {
+      return 0;   // version error
+    }
+    // ... additional tuning
+    config.sns_strength = 90;
+    config.filter_sharpness = 6;
+    //config.alpha_quality = 90;
+    config.target_size = target_size;
+    config.target_PSNR = 1;
+    config.pass = 6;
+    config.lossless = 0;
+    int config_error = WebPValidateConfig(&config);  // not mandatory, but useful
+    qDebug() << "validate config: " << config_error;
+    // Setup the input data
+    WebPPicture pic;
+    if (!WebPPictureInit(&pic)) {
+      return 0;  // version error
+    }
+    QImage image = img;
+    bool alpha = image.hasAlphaChannel();
+    unsigned pixel_count = alpha ? 4 : 3;
+    unsigned stride = pixel_count * image.width();
+    qDebug() << "stride: " << stride;
+
+
+    pic.width = image.width();
+    pic.height = image.height();
+    // allocated picture of dimension width x height
+    if (!WebPPictureAlloc(&pic)) {
+      return 0;   // memory error
+    }
+    qDebug() << "picture size: " << pic.width << "-" << pic.height;
+
+    uint8_t* data = new uint8_t[ stride * image.height() ];
+    if( !data )
+        return QByteArray();
+
+    //Make sure the input is in ARGB
+    if( image.format() != QImage::Format_RGB32 && image.format() != QImage::Format_ARGB32 )
+        image = image.convertToFormat( QImage::Format_ARGB32 );
+
+    for( int iy=0; iy<image.height(); ++iy ){
+        const QRgb* in = (const QRgb*)image.constScanLine( iy );
+        uint8_t* out = data + iy*stride;
+
+        for( int ix=0; ix<image.width(); ++ix, ++in ){
+            *(out++) = qRed( *in );
+            *(out++) = qGreen( *in );
+            *(out++) = qBlue( *in );
+            if( alpha )
+                *(out++) = qAlpha( *in );
+        }
+    }
+
+    // at this point, 'pic' has been initialized as a container,
+    // and can receive the Y/U/V samples.
+    // Alternatively, one could use ready-made import functions like
+    // WebPPictureImportRGB(), which will take care of memory allocation.
+    // In any case, past this point, one will have to call
+    // WebPPictureFree(&pic) to reclaim memory.
+    WebPPictureImportRGB(&pic, data, stride);
+
+    delete[] data;
+
+
+    // Set up a byte-output write method. WebPMemoryWriter, for instance.
+    WebPMemoryWriter writer;
+    WebPMemoryWriterInit(&writer);
+    // Set up a byte-writing method (write-to-memory, in this case):
+    pic.writer = WebPMemoryWrite;
+    pic.custom_ptr = &writer;
+
+
+    // Compress!
+    int ok = WebPEncode(&config, &pic);   // ok = 0 => error occurred!
+    qDebug() << "WebPEncode: " << ok << " error code: " << pic.error_code;
+    WebPPictureFree(&pic);  // must be called independently of the 'ok' result.
+
+    // output data should have been handled by the writer at that point.
+    // -> compressed data is the memory buffer described by wrt.mem / wrt.size
+
+    qDebug() << "writer size: " << writer.size;
+
+    QByteArray bytArray = QByteArray::fromRawData((char*)writer.mem, writer.size);
+    // deallocate the memory used by compressed data
+    WebPMemoryWriterClear(&writer);
+    return bytArray;
+}

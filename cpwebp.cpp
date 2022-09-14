@@ -258,7 +258,7 @@ bool CPWebP::readFromData(unsigned char* data, int data_len, QImage* img_pointer
     return true;
 }
 
-QByteArray CPWebP::convertToWebP(const QImage &img, int target_size) {
+bool CPWebP::convertToWebP(const QImage &img, int target_size, QByteArray *byteArray) {
     qDebug() << "convertToWebP: " << target_size;
     // Setup a config, starting form a preset and tuning some additional
     // parameters
@@ -299,7 +299,7 @@ QByteArray CPWebP::convertToWebP(const QImage &img, int target_size) {
 
     uint8_t* data = new uint8_t[ stride * image.height() ];
     if( !data )
-        return QByteArray();
+        return false;
 
     //Make sure the input is in ARGB
     if( image.format() != QImage::Format_RGB32 && image.format() != QImage::Format_ARGB32 )
@@ -347,8 +347,9 @@ QByteArray CPWebP::convertToWebP(const QImage &img, int target_size) {
 
     qDebug() << "writer size: " << writer.size;
 
-    QByteArray bytArray = QByteArray::fromRawData((char*)writer.mem, writer.size);
+    *byteArray = QByteArray::fromRawData((char*)writer.mem, writer.size);
+    byteArray->detach();
     // deallocate the memory used by compressed data
     WebPMemoryWriterClear(&writer);
-    return bytArray;
+    return true;
 }

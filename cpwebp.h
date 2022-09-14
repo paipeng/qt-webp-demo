@@ -16,7 +16,7 @@ public:
     bool write( const QImage &img , QString &filepath);
     bool read(const QString &filepath, QImage* img_pointer);
     bool readFromData(unsigned char* data, int data_len, QImage* img_pointer);
-    static QByteArray convertToWebP(const QImage &img, int target_size);
+    static bool convertToWebP(const QImage &img, int target_size, QByteArray *byteArray);
 private:
     int quality;
 };

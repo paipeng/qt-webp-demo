@@ -1,4 +1,4 @@
-#ifndef CPWEBP_H
+﻿#ifndef CPWEBP_H
 #define CPWEBP_H
 
 
@@ -16,7 +16,7 @@ public:
     bool write( const QImage &img , QString &filepath);
     bool read(const QString &filepath, QImage* img_pointer);
     bool readFromData(unsigned char* data, int data_len, QImage* img_pointer);
-    static bool convertToWebP(const QImage &img, int target_size, QByteArray *byteArray);
+    static bool convertToWebP(const QImage &img, int target_size, uint8_t* webp_data, int* data_len);
 private:
     int quality;
 };

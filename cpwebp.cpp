@@ -1,4 +1,4 @@
-#include "cpwebp.h"
+﻿#include "cpwebp.h"
 
 #include "webp/decode.h"
 #include "webp/encode.h"
@@ -258,7 +258,7 @@ bool CPWebP::readFromData(unsigned char* data, int data_len, QImage* img_pointer
     return true;
 }
 
-bool CPWebP::convertToWebP(const QImage &img, int target_size, QByteArray *byteArray) {
+bool CPWebP::convertToWebP(const QImage &img, int target_size, uint8_t* webp_data, int* data_len) {
     qDebug() << "convertToWebP: " << target_size;
     // Setup a config, starting form a preset and tuning some additional
     // parameters
@@ -328,7 +328,7 @@ bool CPWebP::convertToWebP(const QImage &img, int target_size, QByteArray *byteA
 
     delete[] data;
 
-
+#if 1
     // Set up a byte-output write method. WebPMemoryWriter, for instance.
     WebPMemoryWriter writer;
     WebPMemoryWriterInit(&writer);
@@ -347,9 +347,17 @@ bool CPWebP::convertToWebP(const QImage &img, int target_size, QByteArray *byteA
 
     qDebug() << "writer size: " << writer.size;
 
-    *byteArray = QByteArray::fromRawData((char*)writer.mem, writer.size);
-    byteArray->detach();
+    *data_len = writer.size;
+    //*webp_data = (char*) malloc(sizeof(char) * 50);
+
+    memcpy(webp_data, writer.mem, sizeof(char) * writer.size);
+    if (*webp_data != NULL) {
+        //memcpy(*webp_data, writer.mem, sizeof(char) * writer.size);
+    }
+    //*byteArray = QByteArray::fromRawData((char*)writer.mem, writer.size);
+    //byteArray->detach();
     // deallocate the memory used by compressed data
     WebPMemoryWriterClear(&writer);
+#endif
     return true;
 }
